@@ -1,0 +1,63 @@
+<section id="mention_légales_content">
+  <h1 class="font-black text-5xl lg:text-6xl text-secondary mb-6 pt-8 italic">
+    <%= page_title!("Mentions légales") %> 
+  </h1>
+  <h2 class="text-xl font-black mt-8 mb-4">
+    1. Éditeur du site
+  </h2>
+  
+  <p class="mb-4">
+    <b>Aikku PROJECTS</b>
+
+    <br><br>
+    Directeur de la publication : Philippe Nougaillon<br>
+    <br>
+
+    Siège social :
+    <br><br>
+    AIKKU SAS
+    <br>
+    Tour CB21/LA DÉFENSE
+    <br>
+    16 PLACE DE L'IRIS
+    <br>
+    92400 COURBEVOIE
+    <br>
+    FRANCE
+    <br><br>
+
+    SIREN : 934 780 735 R.C.S. Nanterre
+    <br><br>
+    
+    Contact : <%= mail_to "contact@aikku.eu", class:"link" %> ou 
+    <%= link_to "envoyer un message via notre formulaire de contact", "https://www.aikku.eu/contact", class:'hover:underline' %>
+  </p>
+
+  <h2 class="text-xl font-black mt-8 mb-4">
+    2. Conception et développement
+  </h2>
+  <p class="mb-4">
+    Création du site en 2024
+    <br>
+    Ce site a été conçu et développé par nous-même en Ruby on Rails.
+  </p>
+
+  <h2 class="text-xl font-black mt-8 mb-4">
+    3. Hébergement
+  </h2>
+  <p class="mb-4">
+    <strong>GANDI SAS</strong>
+    <br>
+    63-65 boulevard Masséna
+    <br>
+    75013 Paris
+    <br>
+    FRANCE
+    <br><br>
+    Contact : <%= link_to "gandi.net", "https://www.gandi.net/fr", target: '_blank', class:'link' %>
+  </p>
+
+  <h2 class="text-xl font-black mt-8">
+    2024 © AIKKU SAS - Tous droits réservés
+  </h2>
+</section>

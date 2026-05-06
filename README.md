@@ -28,7 +28,7 @@
 
 # Installation en local
 
-CaminoV2 est une application <a href="http://rubyonrails.org/">Ruby On Rails 7</a>. 
+Aikku PROJECTS est une application <a href="http://rubyonrails.org/">Ruby On Rails 7</a>. 
 
 Pour pouvoir executer l'application vous devez installer Ruby 3 et Ruby On Rails 7 sur votre machine Linux, en suivant ce tutoriel : <a href="https://gorails.com/setup/ubuntu/22.04">gorails.com/setup/ubuntu</a>.
 
@@ -67,4 +67,4 @@ Les fichiers nécessaires à l'installation de l'application dans un conteneur D
 
 # Nous contacter
 
-Besoin d'aide pour installer Camino ? [Nous contacter](https://www.philnoug.com/contact)
+Besoin d'aide pour installer Camino ? [Nous contacter](https://www.aikku.eu/contact)

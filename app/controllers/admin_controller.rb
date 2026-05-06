@@ -1,4 +1,5 @@
 class AdminController < ApplicationController
+  skip_before_action :authenticate_user!, only: [:mentions_legales]
   before_action :user_authorized?
 
   def stats
@@ -16,8 +17,11 @@ class AdminController < ApplicationController
     end
   end
 
+  def mentions_legales; end
+
   private
-    def user_authorized?
-      authorize :admin
-    end
+
+  def user_authorized?
+    authorize :admin
+  end
 end

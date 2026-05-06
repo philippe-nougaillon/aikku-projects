@@ -100,5 +100,5 @@ Rails.application.configure do
   #   :authentication => :plain,
   # }
 
-  config.action_mailer.default_url_options = { host: 'camino2.philnoug.com', protocol: 'https' }
+  config.action_mailer.default_url_options = { host: 'projects.aikku.eu', protocol: 'https' }
 end

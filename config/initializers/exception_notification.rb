@@ -20,7 +20,7 @@ ExceptionNotification.configure do |config|
   config.add_notifier :email, {
     email_prefix: '[Aikku PROJECTS] ',
     sender_address: %("Aikku PROJECTS" <contact@aikku.eu>),
-    exception_recipients: %w[philippe.nougaillon@aikku.eu, pierre-emmanuel.dacquet@aikku.eu]
+    exception_recipients: %w[philippe.nougaillon@aikku.eu, pierre-emmanuel.dacquet@aikku.eu, lucas.blanquet@aikku.eu]
   }
 
   config.error_grouping = true

@@ -3,16 +3,17 @@
   <i><%= page_title! "Ajout de données dans #{@table.name.humanize}" %></i>
 </div>
 
-<%= form_tag do %>
+<%= form_tag fill_do_path(@table) do %>
 
   <%= hidden_field_tag :table_id, @table.slug %>
+  <%= hidden_field_tag :record_index, @record_index %>
 
   <% if @todo %>
     <%= hidden_field_tag :todo_id, @todo.slug %>
   <% end %>
 
   <% @table.fields.each do |field| %>
-      <% field_name = "[data][#{@record_index}][#{field.id}]" %> 
+      <% field_name = "data[#{@record_index}][#{field.id}]" %> 
       <% value = field.values.find_by(record_index:@record_index) %> 
       <% field_value = value.data if value %>
 
@@ -36,7 +37,7 @@
             <%= radio_button_tag field_name, 'Non', (field_value == 'Non') %> Non
 
           <% elsif field.datatype == "liste" %>
-            <%= select_tag field_name, options_for_select(field.items.split(","), field_value), include_blank: true, class: 'select select-bordered w-48' %>
+            <%= select_tag field_name, options_for_select(field.items.to_s.split(","), field_value), include_blank: true, class: 'select select-bordered w-48' %>
           
           <% end %>
       </div>

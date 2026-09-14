@@ -46,62 +46,76 @@ class TablesController < ApplicationController
   end
 
   def fill
-    @record_index = params[:record_index] || @table.record_index + 1
+    @record_index = (params[:record_index] || @table.record_index + 1).to_i
 
-    @todo = Todo.find_by(slug: params[:todo_id]) if params[:todo_id]
+    @todo = Todo.find_by(slug: params[:todo_id]) if params[:todo_id].present?
   end
 
   def fill_do
-    return unless params[:data]
+    if params[:data].blank?
+      redirect_to @table, alert: "Aucune donnée à enregistrer"
+      return
+    end
 
     @user = current_user
     data = params[:data]
-    table = Table.find_by(slug: params[:table_id])
-    record_index = data.keys.first
-    values = data[record_index.to_s]
+    record_index = (params[:record_index] || data.keys.first).to_i
+    values = data[record_index.to_s] || data[record_index] || {}
 
-    todo = if params[:todo_id].blank?
-             Todo.new
-           else
-             Todo.find_by(slug: params[:todo_id])
-           end
+    todo = Todo.find_by(slug: params[:todo_id]) if params[:todo_id].present?
 
-    if values.values.select { |v| v.present? }.any? # test si tous les champs sont renseignés
+    if values.values.any?(&:present?) # test si au moins un champ est renseigné
 
       # modification = si données existent déjà, on les supprime pour pouvoir ajouter les données modifiées
-      update = table.values.where(record_index:).any?
+      update = @table.values.where(record_index: record_index).any?
 
+      created_at_date = nil
       if update
-        created_at_date = table.values.where(record_index:).first.created_at
-        table.values.where(record_index:).destroy_all
+        created_at_date = @table.values.where(record_index: record_index).first.created_at
+        @table.values.where(record_index: record_index).destroy_all
       end
 
       # ajout des données
-      table.fields.each do |field|
-        record = table.values.new(record_index:,
-                                  field_id: field.id,
-                                  todo_id: todo.id,
-                                  data: values[field.id.to_s],
-                                  user_id: @user.id,
-                                  created_at: created_at_date)
+      @table.fields.each do |field|
+        record_attrs = {
+          record_index: record_index,
+          field_id: field.id,
+          todo_id: todo&.id,
+          data: values[field.id.to_s],
+          user_id: @user.id
+        }
+        record_attrs[:created_at] = created_at_date if created_at_date.present?
+        record = @table.values.new(record_attrs)
         record.save
       end
 
       # incrémenter le nombre d'enregistrements
-      table.update(record_index:) unless update
+      @table.update(record_index: [@table.record_index.to_i, record_index].max) unless update
 
-      flash[:notice] = "Enregistrement #{update ? 'modifié' : 'ajouté'}"
+      flash[:notice] = if todo.blank?
+                         "Test OK. Enregistrement #{update ? 'modifié' : 'ajouté'}. Vous pourrez ajouter des données à chaque tâche terminée"
+                       else
+                         "Enregistrement #{update ? 'modifié' : 'ajouté'}"
+                       end
     else
       flash[:alert] = "L'enregistrement n'a pas été ajouté"
     end
 
     respond_to do |format|
-      format.html.phone { redirect_to todo }
-      format.html.none  do
-        if params[:todo_id].blank?
-          redirect_to table, notice: "Test OK. Vous pourrez ajouter des données à chaque tâche terminée"
-        else
-          redirect_to edit_todo_path(todo)
+      format.html do |variant|
+        variant.phone do
+          if todo
+            redirect_to edit_todo_path(todo)
+          else
+            redirect_to @table
+          end
+        end
+        variant.none do
+          if todo
+            redirect_to edit_todo_path(todo)
+          else
+            redirect_to @table
+          end
         end
       end
     end

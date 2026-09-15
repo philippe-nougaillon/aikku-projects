@@ -59,6 +59,7 @@ class TodosController < ApplicationController
   # GET /todos/new
   def new
     @todo = Todo.new
+    @project = current_user.projects.first
   end
 
   # GET /todos/1/edit

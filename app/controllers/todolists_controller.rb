@@ -46,7 +46,7 @@ class TodolistsController < ApplicationController
 
     if @todolist.project.workflow? # l'indice de la nouvelle liste est le maxi de toutes les listes +1
       @todolist.row = if @todolist.project.todolists.any?
-                        @todolist.project.todolists.maximum(:row) + 1
+                        (@todolist.project.todolists.maximum(:row) || 0) + 1
                       else
                         1
                       end

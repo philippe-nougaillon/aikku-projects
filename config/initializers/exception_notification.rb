@@ -1,13 +1,16 @@
+# frozen_string_literal: true
+
 require 'exception_notification/rails'
 
 ExceptionNotification.configure do |config|
   # Ignore additional exception types.
-  # ActiveRecord::RecordNotFound, Mongoid::Errors::DocumentNotFound, AbstractController::ActionNotFound and ActionController::RoutingError are already added.
-  # config.ignored_exceptions += %w{ActionView::TemplateError CustomError}
+  # ActiveRecord::RecordNotFound, Mongoid::Errors::DocumentNotFound,
+  # AbstractController::ActionNotFound and ActionController::RoutingError are already added.
+  config.ignored_exceptions += %w[ActionController::InvalidAuthenticityToken]
 
   # Adds a condition to decide when an exception must be ignored or not.
   # The ignore_if method can be invoked multiple times to add extra conditions.
-  config.ignore_if do |exception, options|
+  config.ignore_if do |_exception, _options|
     !Rails.env.production?
   end
 
@@ -20,7 +23,7 @@ ExceptionNotification.configure do |config|
   config.add_notifier :email, {
     email_prefix: '[Aikku PROJECTS] ',
     sender_address: %("Aikku PROJECTS" <contact@aikku.eu>),
-    exception_recipients: %w[philippe.nougaillon@aikku.eu, pierre-emmanuel.dacquet@aikku.eu, lucas.blanquet@aikku.eu]
+    exception_recipients: %w[philippe.nougaillon@aikku.eu pierre-emmanuel.dacquet@aikku.eu lucas.blanquet@aikku.eu]
   }
 
   config.error_grouping = true

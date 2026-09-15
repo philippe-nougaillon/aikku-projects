@@ -7,6 +7,6 @@ class Field < ApplicationRecord
   validates_presence_of :name
   validates_presence_of :datatype
 
-  enum datatype: [:texte, :nombre, :euros, :date, :oui_non?, :liste]
+  enum :datatype, %i[texte nombre euros date oui_non? liste]
 
 end

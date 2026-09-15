@@ -1,20 +1,20 @@
 <% if user_signed_in? %>
-  <div class="mx-auto xl:px-4 bg-base-100 shadow sticky top-0 z-50 mb-8">
-    <div class="navbar flex items-start">
+  <div class="xl:px-4 bg-base-100 shadow sticky top-0 z-50 mb-8">
+    <div class="navbar items-start">
       <div class="navbar-start">
         <div class="dropdown xl:!hidden">
           <label tabindex="0" class="btn btn-ghost">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 512 512"><path d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z"/></svg>
           </label>
-          <ul tabindex="0" class="menu dropdown-content mt-3 shadow-xl bg-base-100 rounded-box w-52">
+          <ul tabindex="0" class="menu dropdown-content mt-3 shadow-xl bg-base-100 rounded-box">
             <%= render partial: 'partials/navbar_items' %>
           </ul>
         </div>
         <div class="hidden xl:!flex">
-          <p class="font-bold text-xl whitespace-nowrap mr-4 place-self-center text-accent">
+          <p class="font-bold text-xl whitespace-nowrap place-self-center text-accent">
             <%= truncate(current_user.account.name, length: 20) %>
           </p>
-          <ul class="menu menu-horizontal p-0">
+          <ul class="menu menu-horizontal menu-sm">
             <%= render partial: 'partials/navbar_items' %>
           </ul>
         </div>
@@ -23,22 +23,22 @@
         <div class="form-control">
           <%= form_tag(@search_filter, url: 'index', method: :get) do %>
             <div class="input-group">
-              <%= text_field_tag :search, params[:search], class: "input input-accent input-bordered input-xs" %>
-              <button class="btn btn-accent btn-square btn-xs">
+              <%= text_field_tag :search, params[:search], class: "input input-secondary input-sm" %>
+              <button class="btn btn-ghost btn-square btn-sm">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
               </button>
             </div>
           <% end %>
         </div>
-        <%= link_to current_user do %>
-          <label tabindex="0" class="avatar online placeholder cursor-pointer ml-3">
+        <%= link_to current_user, title: "Afficher les détails de l'utilisateur connecté" do %>
+          <label tabindex="0" class="avatar online placeholder cursor-pointer">
             <% if current_user.avatar.attached? %>
               <div class="w-10 rounded-full bg-slate-500">
                 <%= image_tag(current_user.avatar, size:'25x25', alt:'', class:"mini_avatar") %>
               </div>
             <% else %>
-              <div class="bg-primary-focus text-neutral-content rounded-full w-8">
-                <span class="text-primary-content"><%= current_user.username.first.humanize %></span>
+              <div class="bg-primary-focus rounded-full  w-8">
+                <span class="text-primary"><%= current_user.username.first.humanize %></span>
               </div>
             <% end %>
           </label>

@@ -1,7 +1,7 @@
 <div class="flex flex-wrap lg:mx-24">
   <div class="flex-1">
-    <%= image_tag "montagne.png", width: "50%", class:"opacity-50 p-12" %>
-    <h1 class="text-primary">Aikku PROJECTS (Aka Camino)</h1>
+    <%= image_tag "montagne.png", width: "40%", class:"py-12" %>
+    <h1 class="text-primary">Aikku PROJECTS (alias Camino)</h1>
     <h2 class="mb-6">Gérez vos projets, en équipe et en mobilité</h2>
 
     <ul class="list-disc mb-6">
@@ -11,14 +11,12 @@
       <li>Suivez l'activité des participants en vous abonnant aux notifications (travaux terminés, nouveaux commentaires, ajout/modification...)</li>
       <li>Créez des formulaires pour collecter des données complémentaires à vos projets (inventaire, rapport d'intervention, etc.)</li>
     </ul>
-
     <%= link_to "En savoir plus", about_path, class:"btn btn-primary btn-outline" %>
-
   </div>
 
   <div class="flex-1 my-12">
     <div class="flex flex-col justify-center aligns-items-center items-center float-end">
-      <div class="p-12 border rounded-xl shadow-xl">
+      <div class="p-12 border rounded shadow">
         <h1 class="text-center">Connexion</h1>
         <hr class="my-4">
         <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>

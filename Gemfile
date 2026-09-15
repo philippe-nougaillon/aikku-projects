@@ -121,3 +121,5 @@ gem 'omniauth-rails_csrf_protection', '~> 1.0'
 
 # Needed until Ruby 3.3.4 is released https://github.com/ruby/ruby/pull/11006
 gem 'net-pop', github: 'ruby/net-pop'
+
+gem "simplecov", "~> 1.3", :group => :test

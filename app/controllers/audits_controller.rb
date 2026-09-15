@@ -7,13 +7,13 @@ class AuditsController < ApplicationController
     else
       @audits  = Audited::Audit.where(user_id: current_user.id).order('id DESC')
     end
-    @actions = @audits.pluck(:action).uniq.sort
-    @types   = @audits.pluck(:auditable_type).uniq.sort
+    @actions = @audits.pluck(:action).compact.uniq.sort
+    @types   = @audits.pluck(:auditable_type).compact.uniq.sort
 
     @audits = @audits.where('DATE(created_at) = ?', params[:date]) unless params[:date].blank?
     @audits = @audits.where(action: params[:audit_action]) unless params[:audit_action].blank?
     @audits = @audits.where(auditable_type: params[:type]) unless params[:type].blank?
-    @audits = @audits.where(user_id: User.find_by(email: params[:user_email]).id) unless params[:user_email].blank?
+    @audits = @audits.where(user_id: User.find_by(email: params[:user_email])&.id) unless params[:user_email].blank?
 
     @audits = @audits.page(params[:page]).per(20)
   end

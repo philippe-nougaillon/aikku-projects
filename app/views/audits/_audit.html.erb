@@ -1,10 +1,10 @@
 <tr>
   <td></td>
   <td>
-    <%= l audit.created_at %>
+    <%= l audit.created_at if audit.created_at %>
   </td>
   <td>
-    <%= time_ago_in_words(audit.created_at) %>
+    <%= time_ago_in_words(audit.created_at) if audit.created_at %>
   </td>
   <td width="23%">
     <%= audit.try(:user).try(:email) %>
@@ -16,7 +16,7 @@
     <%= audit.auditable_id %>
   </td>
   <td>
-    <%= audit.action.humanize %>
+    <%= audit.action&.humanize %>
   </td>
   <td>
     <%= sanitize prettify(audit).join('<br>') %>

@@ -69,7 +69,7 @@ Rails.application.configure do
   # config.action_cable.disable_request_forgery_protection = true
 
   # Parce qu'on utilise RSpec
-  config.action_mailer.preview_path = "#{Rails.root}/spec/mailers/previews"
+  config.action_mailer.preview_paths = ["#{Rails.root}/spec/mailers/previews"]
 
   config.action_controller.default_url_options = { host: '127.0.0.1', port: 3000 }
 

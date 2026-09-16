@@ -1,10 +1,12 @@
-class AdminController < ApplicationController
+# frozen_string_literal: true
+
+class AdminController < ApplicationController # rubocop:disable Style/Documentation
   skip_before_action :authenticate_user!, only: [:mentions_legales]
   before_action :user_authorized?
 
   def stats
     @users = User.all.order('users.current_sign_in_at DESC NULLS LAST')
-    @users = @users.page(params[:page]).per(50)
+    @users = @users.page(params[:page]).per(100)
   end
 
   def suppression_compte

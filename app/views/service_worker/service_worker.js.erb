@@ -9,6 +9,8 @@ function onInstall(event) {
         '<%= asset_path 'application.js' %>',
         '<%= asset_path 'application.css' %>'
       ]);
+    }).catch(function(error) {
+      console.warn('[Serviceworker] Pre-caching failed (storage may be restricted):', error);
     })
   );
 }
@@ -27,6 +29,8 @@ function onActivate(event) {
           return caches.delete(cacheName);
         })
       );
+    }).catch(function(error) {
+      console.warn('[Serviceworker] Cache cleanup failed:', error);
     })
   );
 }
@@ -42,11 +46,13 @@ function onFetch(event) {
         }
         // if not found in cache, return default offline content for navigate requests
         if (event.request.mode === 'navigate' ||
-          (event.request.method === 'GET' && event.request.headers.get('accept').includes('text/html'))) {
+          (event.request.method === 'GET' && event.request.headers.get('accept') && event.request.headers.get('accept').includes('text/html'))) {
           console.log('[Serviceworker]', "Fetching offline content", event);
           return caches.match('/offline.html');
         }
-      })
+      }).catch(function(error) {
+        console.warn('[Serviceworker] Cache match failed:', error);
+      });
     })
   );
 }

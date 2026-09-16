@@ -28,9 +28,9 @@
 
 # Installation en local
 
-Aikku PROJECTS est une application <a href="http://rubyonrails.org/">Ruby On Rails 7</a>. 
+Aikku PROJECTS est une application <a href="http://rubyonrails.org/">Ruby On Rails 8</a>. 
 
-Pour pouvoir executer l'application vous devez installer Ruby 3 et Ruby On Rails 7 sur votre machine Linux, en suivant ce tutoriel : <a href="https://gorails.com/setup/ubuntu/22.04">gorails.com/setup/ubuntu</a>.
+Pour pouvoir executer l'application vous devez installer Ruby 4 et Ruby On Rails 8 sur votre machine Linux, en suivant ce tutoriel : <a href="https://gorails.com/setup/ubuntu/24.04">gorails.com/setup/ubuntu</a>.
 
 Une fois Ruby on Rails correctement installé, vous pourrez cloner les sources depuis Github et lancer l'application en utilisant le processus classique :
 

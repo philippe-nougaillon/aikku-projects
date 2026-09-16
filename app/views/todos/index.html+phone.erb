@@ -4,9 +4,9 @@
 </div>
 
 <div class="btn-group w-full px-2 mb-6">
-  <%= link_to "À faire", url_for(params.permit(:tag).merge(filter: "todo")), class: "flex-1 btn btn-sm btn-outline #{ params[:filter] == 'todo' ? 'btn-active' : '' }" %>
-  <%= link_to "Terminées", url_for(params.permit(:tag).merge(filter:  "done")), class: "flex-1 btn btn-sm btn-outline #{ params[:filter] == 'done' ? 'btn-active' : '' }" %>
-  <%= link_to "Toutes", url_for(params.permit(:tag)), class: "flex-1 btn btn-sm btn-outline #{ params[:filter] == 'all' ? 'btn-active' : '' }" %>
+  <%= link_to "À faire", todos_path(tag: params[:tag].presence, filter: "todo"), class: "flex-1 btn btn-sm btn-outline #{ params[:filter] == 'todo' ? 'btn-active' : '' }" %>
+  <%= link_to "Terminées", todos_path(tag: params[:tag].presence, filter: "done"), class: "flex-1 btn btn-sm btn-outline #{ params[:filter] == 'done' ? 'btn-active' : '' }" %>
+  <%= link_to "Toutes", todos_path(tag: params[:tag].presence), class: "flex-1 btn btn-sm btn-outline #{ params[:filter] == 'all' ? 'btn-active' : '' }" %>
 </div>
 
 <% if @tags.any? %>

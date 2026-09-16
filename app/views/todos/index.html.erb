@@ -14,10 +14,10 @@
 <div class="mb-4">
   <span>
     Afficher les opérations : 
-    <%= link_to_unless params[:filter] == "todo", "À faire", url_for(params.permit(:tag).merge(filter: "todo")), title:"Affiche les opérations non terminées qui vous sont assignées", class: 'link' %> |
-    <%= link_to_unless params[:filter] == "pending", "En attente", url_for(params.permit(:tag).merge(filter: "pending")), title:"Affiche toutes opérations non terminées", class: 'link'  %> |
-    <%= link_to_unless params[:filter] == "notify", "À notifier", url_for(params.permit(:tag).merge(filter: "notify")), title:"Affiche les opérations non terminées et arrivées à échéance", class: 'link' %> |
-    <%= link_to_unless params[:filter] == "all", "Toutes", url_for(params.permit(:tag)), class: 'link' %>
+    <%= link_to_unless params[:filter] == "todo", "À faire", todos_path(tag: params[:tag].presence, filter: "todo"), title:"Affiche les opérations non terminées qui vous sont assignées", class: 'link' %> |
+    <%= link_to_unless params[:filter] == "pending", "En attente", todos_path(tag: params[:tag].presence, filter: "pending"), title:"Affiche toutes opérations non terminées", class: 'link'  %> |
+    <%= link_to_unless params[:filter] == "notify", "À notifier", todos_path(tag: params[:tag].presence, filter: "notify"), title:"Affiche les opérations non terminées et arrivées à échéance", class: 'link' %> |
+    <%= link_to_unless params[:filter] == "all", "Toutes", todos_path(tag: params[:tag].presence), class: 'link' %>
   </span>
 </div>
 

@@ -44,8 +44,8 @@
   <% if @project.todolists.any? %>
     <% if @project.todos.any? %>
       <div class="btn-group w-full px-2 mt-6">
-        <%= link_to "Tout (#{@project.todos.count})", url_for(params.permit(:tag).merge(show_only_undone: "no")), class: "flex-1 btn btn-sm btn-outline #{ params[:show_only_undone] == 'no' ? 'btn-active' : '' }" %>
-        <%= link_to "Reste à faire (#{@project.todos.done.count})", url_for(params.permit(:tag).merge(show_only_undone: "yes")), class: "flex-1 btn btn-sm btn-outline #{ params[:show_only_undone] == 'yes' ? 'btn-active' : '' }" %>
+        <%= link_to "Tout (#{@project.todos.count})", project_path(@project, tag: params[:tag].presence, show_only_undone: "no"), class: "flex-1 btn btn-sm btn-outline #{ params[:show_only_undone] == 'no' ? 'btn-active' : '' }" %>
+        <%= link_to "Reste à faire (#{@project.todos.done.count})", project_path(@project, tag: params[:tag].presence, show_only_undone: "yes"), class: "flex-1 btn btn-sm btn-outline #{ params[:show_only_undone] == 'yes' ? 'btn-active' : '' }" %>
       </div>
     <% end %>
   <% else %>

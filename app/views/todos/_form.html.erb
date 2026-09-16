@@ -37,7 +37,7 @@
       <div class="flex flex-wrap items-center gap-4">
         <div>
           <%= f.label :document, "Document :" %>
-          <%= f.file_field :document, class:"mb-24 sm:mb-0 file-input file-input-sm file-input-secondary", accept: "application/pdf" %>
+          <%= f.file_field :document, class:"mb-24 sm:mb-0 file-input file-input-sm file-input-ghost", accept: "application/pdf" %>
         </div>
 
         <div>
@@ -48,11 +48,16 @@
 
       <% if @table %>
         <div class="my-4">
-          <%= link_to "Ajouter des données dans la table '#{@table.name.humanize}'", fill_url(@table.slug, todo_id:@todo.slug), class: 'link' %>
+          <%= f.label "Données associées : " %>
+          <%= @table.name.humanize %>
           <% if @table.values.where(todo_id: @todo.id).any? %>
+            :
+            <%= @table.values.where(todo_id: @todo.id).pluck(:data).join(', ') %>
             |
-            <%= link_to "Afficher les données saisies", table_path(@table, project: @todo.project.name), class:'link' %>
+            <%= link_to "Voir tout", table_path(@table, project: @todo.project.name), class:'link' %>
           <% end %>
+          | 
+          <%= link_to "Ajouter", fill_url(@table.slug, todo_id:@todo.slug), class: 'link' %>
         </div>
       <% end %>
 

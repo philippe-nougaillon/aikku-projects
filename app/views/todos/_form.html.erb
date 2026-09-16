@@ -54,7 +54,7 @@
             :
             <%= @table.values.where(todo_id: @todo.id).pluck(:data).join(', ') %>
             |
-            <%= link_to "Voir tout", table_path(@table, project: @todo.project.name), class:'link' %>
+            <%= link_to "Voir tout", table_path(@table, project: @todo.project.slug), class:'link' %>
           <% end %>
           | 
           <%= link_to "Ajouter", fill_url(@table.slug, todo_id:@todo.slug), class: 'link' %>

@@ -1,6 +1,6 @@
 class TablesController < ApplicationController
   before_action :set_table, only: %i[show show_attrs fill fill_do edit update destroy delete_record link link_do]
-  before_action :user_authorized?, except: %i[ index new create ] 
+  before_action :user_authorized?, except: %i[index new create]
 
   # GET /tables
   # GET /tables.json
@@ -20,21 +20,19 @@ class TablesController < ApplicationController
     @values = @table.values
 
     unless params[:project].blank?
-      @values = @table.values.where(todo_id: Project.find_by(name: params[:project]).todos.ids)
+      @values = @table.values.where(todo_id: Project.find_by(slug: params[:project]).todos.ids)
     end
 
-    unless params[:search].blank?
-      @values = @values.where('data ILIKE ?', "%#{params[:search].strip}%")
-    end
+    @values = @values.where('data ILIKE ?', "%#{params[:search].strip}%") unless params[:search].blank?
 
     respond_to do |format|
       format.html
       format.xls do
         book = TableToXls.new(@table).call
         file_contents = StringIO.new
-        book.write file_contents 
+        book.write file_contents
         filename = "#{@table.name}_#{DateTime.now}.xls"
-        send_data file_contents.string.force_encoding('binary'), filename: filename 
+        send_data file_contents.string.force_encoding('binary'), filename: filename
       end
     end
   end
@@ -53,7 +51,7 @@ class TablesController < ApplicationController
 
   def fill_do
     if params[:data].blank?
-      redirect_to @table, alert: "Aucune donnée à enregistrer"
+      redirect_to @table, alert: 'Aucune donnée à enregistrer'
       return
     end
 

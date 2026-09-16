@@ -1,5 +1,5 @@
 <%= form_for(@todo, multipart: true) do |f| %>
-  <div class="p-2 shadow">
+  <div class="p-2 pb-8 shadow-md">
     <%= f.hidden_field :todolist_id %>
     <%= f.check_box :done, title:'Cochée = Terminée', class: 'checkbox checkbox-primary mb-4 mr-10' %>
     <%= f.text_field :name, class: 'input input-bordered lg:w-96 mb-4', required: true %>
@@ -37,13 +37,12 @@
       <div class="flex flex-wrap items-center gap-4">
         <div>
           <%= f.label :document, "Document :" %>
-          <%= f.file_field :document, class:"mb-24 sm:mb-0 file-input border-0 file-input-sm file-input-accent", accept: "application/pdf" %>
+          <%= f.file_field :document, class:"mb-24 sm:mb-0 file-input file-input-sm file-input-secondary", accept: "application/pdf" %>
         </div>
 
         <div>
           <%= f.label :tag_list, 'Tags :' %>
-          <%= f.text_field :tag_list, value:@todo.tag_list.join(", "), class: 'input input-bordered input-sm' %>
-          <small><i>Pour regrouper vos todos par thème (séparés d'une virgule, ex: Urgent, Travaux, Voirie)</i></small>
+          <%= f.text_field :tag_list, value:@todo.tag_list.join(", "), class: "input input-bordered input-sm", title: "Pour regrouper vos todos par thème (séparés d'une virgule, ex: Urgent, Travaux, Voirie)" %>
         </div>
       </div>
 

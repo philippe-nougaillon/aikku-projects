@@ -14,7 +14,7 @@
           <div class="card-body">
             <strong class="text-lg"><%= @todo.name.humanize %></strong>
             <% @todo.tags.each do |tag| %>
-              <p class="text-base-content badge badge-outline text-base-content badge-xs"><%= tag.name %></p>
+              <p class="text-base-content badge badge-ghost text-base-content badge-xs"><%= tag.name %></p>
             <% end %>
             <% if @table %>
               <%= link_to "Ajouter des données dans #{@table.name.humanize}", fill_url(@table.slug, todo_id:@todo.slug), class: 'link' %>

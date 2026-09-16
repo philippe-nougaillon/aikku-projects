@@ -12,7 +12,7 @@
 <% if @tags.any? %>
   <div class="flex items-center overflow-x-auto gap-1 pb-4 mx-2">
     <% tag_cloud(@tags, ['badge-xs', 'badge-sm', '', 'badge-md']) do |tag, css_class| %>
-      <%= link_to(tag.name, todos_path(tag:tag.name), class: 'badge badge-outline text-base-content break-keep whitespace-nowrap ' + css_class) %>
+      <%= link_to(tag.name, todos_path(tag:tag.name), class: 'badge badge-ghost text-base-content break-keep whitespace-nowrap ' + css_class) %>
     <% end %>
   </div>
 <% end %>

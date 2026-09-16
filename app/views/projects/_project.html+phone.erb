@@ -12,15 +12,14 @@
         <b><%= l(project.duedate) %></b>
         <br>
       <% end %>
-      Charge :
-      <%= number_with_precision(project.todos.sum(:charge_est), precision: 2) %> j
+      Charge : <%= number_with_precision(project.todos.sum(:charge_est), precision: 2) %> j
       / <%= number_with_precision(project.todos.sum(:charge_reelle), precision: 2) %> j
       <% if project.workflow? and project.current_todolist %>
         <br>
         <small><%= truncate(project.current_todolist.name, length: 15) %></small>
       <% end %>
       <br>
-      <%= "MÀJ : il y a #{time_ago_in_words(project.last_update)}" if project.logs.any? %>
+      <%= "MàJ : il y a #{time_ago_in_words(project.last_update)}" if project.logs.any? %>
       <br>
       Participants :
       <br>

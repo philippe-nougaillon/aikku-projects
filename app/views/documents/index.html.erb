@@ -7,7 +7,7 @@
         <td></td>
         <td>Nom</td>
         <th>Projet</th>
-        <th>MÀJ</th>
+        <th>MàJ</th>
         <th></th>
       </tr>
     </thead>
@@ -42,6 +42,10 @@
     </tfoot>
   </table>
 </div>
+
+<% unless @documents.any? %>
+  <p>Aucun document pour le moment...</p>
+<% end %>
 
 <% if @logs.any? %>
   <div style="display:block;clear: both;">

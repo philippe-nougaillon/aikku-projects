@@ -26,7 +26,7 @@
           <% end %>
           <br>
           <% unless table.values.maximum(:updated_at).blank? %>
-            Màj : <%= "il y a #{time_ago_in_words(table.values.maximum(:updated_at))}" if table.values.any? %>
+            MàJ : <%= "il y a #{time_ago_in_words(table.values.maximum(:updated_at))}" if table.values.any? %>
           <% end %>
         </div>
       <% end %>

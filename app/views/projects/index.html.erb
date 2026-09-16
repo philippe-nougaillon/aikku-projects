@@ -12,7 +12,7 @@
     <span>
       Tags :
       <% tag_cloud(@tags, ['badge-sm', '', 'badge-md', 'badge-lg']) do |tag, css_class| %>
-        <%= link_to(tag.name, projects_path(tag:tag.name), class: 'badge badge-outline ' + css_class) %>
+        <%= link_to(tag.name, projects_path(tag:tag.name), class: 'badge badge-ghost ' + css_class) %>
       <% end %>
     <span>
   </div>
@@ -23,13 +23,13 @@
     <table class="table">
       <thead>
         <tr>
-          <td>Nom / Description</td>
+          <td>Nom/Description</td>
           <th>Échéance</th>
-          <th>Charge</th>
+          <th>Charge (Estimée/Réelle)</th>
           <th>Progression</th>
           <th>Phase en cours</th>
           <th>Participants</th>
-          <th>MÀJ</th>
+          <th>MàJ</th>
         </tr>
       </thead>
 

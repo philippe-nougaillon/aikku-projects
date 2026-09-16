@@ -2,7 +2,7 @@
   <th>
     <% if policy(todo).update? %>
       <%= form_for todo do |f| %>
-        <%= f.check_box :done, :onclick => "this.form.submit();", class: 'checkbox checkbox-primary', 'data-turbo': false %>
+        <%= f.check_box :done, :onclick => "this.form.submit();", class: 'checkbox checkbox-secondary', 'data-turbo': false %>
       <% end %>
     <% end %>
   </th>
@@ -10,7 +10,7 @@
     <% unless todo.done %>
       <%= link_to todo.name.humanize, edit_todo_path(todo), class: 'text-lg text-primary' %>
     <% else %>
-      <del class="text-primary"><b class="text-primary"><%= todo.name.humanize %></b></del>
+      <del class="text-primary text-lg"><%= todo.name.humanize %></del>
     <% end %>
   </td>
   <td><%= todo.user.name if todo.user %></td>
@@ -25,7 +25,7 @@
   <td>
     <% if todo.tags.any? %>
         <% tag_cloud(todo.tags, ['badge-sm', '', 'badge-md', 'badge-lg']) do |tag, css_class| %>
-          <%= link_to(tag.name.humanize, todos_path(tag:tag.name), class: 'badge badge-outline text-base-content ' + css_class) %>
+          <%= link_to(tag.name.humanize, todos_path(tag:tag.name), class: 'badge badge-ghost text-base-content ' + css_class) %>
         <% end %>
     <% end %>
   </td>

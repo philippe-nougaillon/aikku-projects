@@ -21,12 +21,12 @@
 <% end %>
 
 <% if @project.duedate %>
-  <span>| Échéance :<strong><%= l(@project.duedate) %></strong></span>
+  <span>| Échéance : <strong><%= l(@project.duedate) %></strong></span>
 <% end %>
 
 <% if @project.todos %>
   <span>
-    | Charge :<strong><%= number_with_precision(@project.todos.sum(:charge_est), precision: 2) %></strong>
+    | Charge : <strong><%= number_with_precision(@project.todos.sum(:charge_est), precision: 2) %></strong>
     / <strong><%= number_with_precision(@project.todos.sum(:charge_reelle), precision: 2) %></strong> jours
   </span>
 <% end %>
@@ -35,7 +35,7 @@
   <span>
   | Tags :
     <% tag_cloud(@project.tags, ['badge-sm', '', 'badge-md', 'badge-lg']) do |tag, css_class| %>
-      <%= link_to(tag.name, projects_path(tag:tag.name), class: 'badge badge-outline ' + css_class) %>
+      <%= link_to(tag.name, projects_path(tag:tag.name), class: 'badge badge-ghost ' + css_class) %>
     <% end %>
   </span>
 <% end %>
@@ -76,7 +76,7 @@
 <% end %>
 <br>
 
-<div class="overflow-x-auto">
+<div class="overflow-x-auto py-2">
   <table class="table table-normal">
     <thead>
       <td><%= @project.workflow? ? 'Phases' : 'Todo List' %></td>
@@ -85,7 +85,7 @@
       <th>Échéance</th>
       <th>Charge est.</th>
       <th>Réelle</th>
-      <th>MÀJ</th>
+      <th>MàJ</th>
       <th>Écart</th>
     </thead>
     <tbody>

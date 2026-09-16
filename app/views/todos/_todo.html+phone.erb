@@ -11,7 +11,7 @@
           <strong><i class="text-base-content"><%= todo.project.name %>:<%= todo.todolist.name %></i></strong>
           <strong><%= todo.name.humanize %></strong>
           <% todo.tags.each do |tag| %>
-            <p class="text-base-content badge badge-outline text-base-content badge-xs"><%= tag.name %></p>
+            <p class="text-base-content badge badge-ghost text-base-content badge-xs"><%= tag.name %></p>
           <% end %>
           <p><%= l todo.duedate if todo.duedate %></p>
         </div>

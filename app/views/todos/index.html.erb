@@ -5,7 +5,7 @@
     <span>
       Tags :
       <% tag_cloud(@tags, ['badge-sm', '', 'badge-md', 'badge-lg']) do |tag, css_class| %>
-        <%= link_to(tag.name.humanize, todos_path(tag: tag.name), class: 'badge badge-outline ' + css_class) %>
+        <%= link_to(tag.name.humanize, todos_path(tag: tag.name), class: 'badge badge-ghost ' + css_class) %>
       <% end %>
     </span>
   </div>
@@ -48,7 +48,7 @@
             </th>
             <td>
               <% todo.tags.each do |tag| %>
-                <%= link_to(tag.name.humanize, todos_path(tag: tag.name), class: 'text-base-content badge badge-outline text-base-content badge-sm') %>
+                <%= link_to(tag.name.humanize, todos_path(tag: tag.name), class: 'text-base-content badge badge-ghost text-base-content badge-sm') %>
               <% end %>
             </td>
             <td style="width:400px;">

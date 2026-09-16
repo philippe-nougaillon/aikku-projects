@@ -10,7 +10,7 @@
   <% if @project.tag_list.any? %>
     <div class="flex items-center overflow-x-auto gap-1 py-4">
       <% tag_cloud(@project.tags, ['badge-sm', '', 'badge-md', 'badge-lg']) do |tag, css_class| %>
-        <%= link_to(tag.name, project_path(tag:tag.name), class: 'badge badge-outline text-base-content break-keep whitespace-nowrap ' + css_class ) %>
+        <%= link_to(tag.name, project_path(tag:tag.name), class: 'badge badge-ghost text-base-content break-keep whitespace-nowrap ' + css_class ) %>
       <% end %>
     </div>
   <% end %>

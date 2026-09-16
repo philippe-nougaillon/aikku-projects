@@ -28,7 +28,6 @@
     <div data-controller="service-worker">
       <%= render partial: "partials/navbar" %>
       <main class="mx-auto px-2 lg:px-12">
-        <%= render partial: "partials/welcome_message" if user_signed_in? && !session[:welcome_message] %>
         <%= yield %>
         <%= render partial: "partials/notification" %>
       </main>

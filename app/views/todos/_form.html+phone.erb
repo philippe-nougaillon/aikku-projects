@@ -42,13 +42,12 @@
 
     <div>
       <%= f.label :document, "Document" %>
-      <%= f.file_field :document, class:"file-input file-input-bordered file-input-sm file-input-accent w-full", accept: "application/pdf" %>
+      <%= f.file_field :document, class:"file-input file-input-bordered file-input-sm file-input-secondary w-full", accept: "application/pdf" %>
     </div>
 
     <div class="mt-4">
       <%= f.label :tag_list, 'Tags' %>
-      <%= f.text_field :tag_list, value:@todo.tag_list.join(", "), class: 'input input-bordered input-sm w-full' %>
-      <small><i>Pour regrouper vos todos par thème (séparés d'une virgule, ex: Urgent, Travaux, Voirie)</i></small>
+      <%= f.text_field :tag_list, value:@todo.tag_list.join(", "), class: "input input-bordered input-sm w-full", title: "Pour regrouper vos todos par thème (séparés d'une virgule, ex: Urgent, Travaux, Voirie)" %>
     </div>
 
     <% if @table %>

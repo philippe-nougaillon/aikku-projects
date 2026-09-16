@@ -8,12 +8,11 @@
 
 <% if @table.fields.any? %>
   <% if @table.values.any? %>
-
     <%= form_tag table_path, method: :get, class: 'mb-4' do %>
       <div class="flex items-center">
           <%= label_tag :project, 'Projet :', class:'font-normal' %>
           <%= select_tag :project, 
-                                  options_for_select(@table.projects.pluck(:name).uniq.sort, params[:project]), 
+                                  options_from_collection_for_select(@table.projects.uniq.sort, :slug, :name, params[:project]), 
                                   include_blank: true,
                                   class:'select select-sm select-bordered mr-8 ml-2',
                                   onchange: 'this.form.submit()' %>

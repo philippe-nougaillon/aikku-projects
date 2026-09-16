@@ -38,7 +38,7 @@
 
     <% if todolist.todos.done.any? %>
       <br>
-      MÀJ : il y a
+      MàJ : il y a
       <%= time_ago_in_words(l(todolist.todos.done.maximum(:updated_at).to_date)) %>
     <% end %>
 

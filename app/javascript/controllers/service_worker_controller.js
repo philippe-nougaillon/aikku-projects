@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
+
 export default class extends Controller {
   connect() {
     if (!window.isSecureContext) {
@@ -7,26 +8,24 @@ export default class extends Controller {
     }
 
     if ("serviceWorker" in navigator) {
-      if (navigator.serviceWorker.controller) {
-        // If the service worker is already running, skip to state change
-        this.stateChange();
-      } else {
-        // Register the service worker, and wait for it to become active
-        navigator.serviceWorker
-          .register("/service-worker.js", { scope: "./" })
-          .then((reg) => {
-            console.log("[Companion]", "Service worker registered!");
-            console.log(reg);
-          })
-          .catch((error) => {
-            console.warn("[Companion] Service worker registration failed:", error);
-          });
+      navigator.serviceWorker
+        .register("/service-worker.js", { scope: "/" })
+        .then((reg) => {
+          console.log("[ServiceWorker] Registered with scope:", reg.scope);
+          // Check for service worker script updates
+          reg.update();
+        })
+        .catch((error) => {
+          console.warn("[ServiceWorker] Registration failed:", error);
+        });
 
-        navigator.serviceWorker.addEventListener(
-          "controllerchange",
-          this.controllerChange.bind(this)
-        );
-      }
+      navigator.serviceWorker.addEventListener(
+        "controllerchange",
+        this.controllerChange.bind(this)
+      );
+
+      window.addEventListener("online", this.handleOnline.bind(this));
+      window.addEventListener("offline", this.handleOffline.bind(this));
     }
   }
 
@@ -40,6 +39,14 @@ export default class extends Controller {
   }
 
   stateChange() {
-    // perform any visual manipulations here
+    // Perform any visual manipulations or cache refreshes here
+  }
+
+  handleOnline() {
+    console.log("[PWA] Network status: back online");
+  }
+
+  handleOffline() {
+    console.log("[PWA] Network status: offline");
   }
 }

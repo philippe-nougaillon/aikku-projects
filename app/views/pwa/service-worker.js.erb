@@ -1,0 +1,97 @@
+var CACHE_VERSION = 'v2';
+var CACHE_NAME = 'camino-sw-' + CACHE_VERSION;
+var OFFLINE_URL = '/offline.html';
+
+var PRECACHE_ASSETS = [
+  OFFLINE_URL,
+  '<%= asset_path 'application.js' %>',
+  '<%= asset_path 'application.css' %>',
+  '<%= asset_path 'tailwind.css' %>',
+  '<%= asset_path 'inter-font.css' %>',
+  '/favicons/android-icon-192x192.png',
+  '/favicons/android-icon-512x512.png',
+  '/favicons/favicon-32x32.png'
+];
+
+self.addEventListener('install', function(event) {
+  self.skipWaiting();
+  event.waitUntil(
+    caches.open(CACHE_NAME).then(function(cache) {
+      return cache.addAll(PRECACHE_ASSETS);
+    }).catch(function(error) {
+      console.warn('[Serviceworker] Pre-caching warning:', error);
+    })
+  );
+});
+
+self.addEventListener('activate', function(event) {
+  event.waitUntil(
+    Promise.all([
+      self.clients.claim(),
+      caches.keys().then(function(cacheNames) {
+        return Promise.all(
+          cacheNames.filter(function(name) {
+            return name !== CACHE_NAME;
+          }).map(function(name) {
+            console.log('[Serviceworker] Deleting legacy cache:', name);
+            return caches.delete(name);
+          })
+        );
+      })
+    ])
+  );
+});
+
+self.addEventListener('fetch', function(event) {
+  // Only handle HTTP/HTTPS GET requests
+  if (event.request.method !== 'GET' || !event.request.url.startsWith('http')) {
+    return;
+  }
+
+  var isNavigation = event.request.mode === 'navigate' ||
+    (event.request.headers.get('accept') && event.request.headers.get('accept').includes('text/html'));
+
+  if (isNavigation) {
+    // Network-First strategy with cache and offline fallback for HTML navigations
+    event.respondWith(
+      fetch(event.request)
+        .then(function(networkResponse) {
+          if (networkResponse && networkResponse.status === 200) {
+            var responseToCache = networkResponse.clone();
+            caches.open(CACHE_NAME).then(function(cache) {
+              cache.put(event.request, responseToCache);
+            });
+          }
+          return networkResponse;
+        })
+        .catch(function() {
+          return caches.match(event.request).then(function(cachedResponse) {
+            if (cachedResponse) {
+              return cachedResponse;
+            }
+            return caches.match(OFFLINE_URL);
+          });
+        })
+    );
+    return;
+  }
+
+  // Stale-While-Revalidate strategy for static assets (CSS, JS, images, fonts, CDN)
+  event.respondWith(
+    caches.match(event.request).then(function(cachedResponse) {
+      var fetchPromise = fetch(event.request).then(function(networkResponse) {
+        if (networkResponse && networkResponse.status === 200) {
+          var responseToCache = networkResponse.clone();
+          caches.open(CACHE_NAME).then(function(cache) {
+            cache.put(event.request, responseToCache);
+          });
+        }
+        return networkResponse;
+      }).catch(function() {
+        return cachedResponse;
+      });
+
+      return cachedResponse || fetchPromise;
+    })
+  );
+});

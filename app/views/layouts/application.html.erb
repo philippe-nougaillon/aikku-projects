@@ -3,7 +3,7 @@
   <head>
     <title><%= page_title %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link rel="manifest" href="/manifest.json">
+    <%= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>

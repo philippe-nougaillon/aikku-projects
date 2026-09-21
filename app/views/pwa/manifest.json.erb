@@ -2,8 +2,8 @@
   "name": "Camino - Gestion de Projets",
   "short_name": "Camino",
   "description": "Gérez vos projets, en équipe et en mobilité",
-  "start_url": "/",
-  "scope": "/",
+  "start_url": "<%= root_path %>",
+  "scope": "<%= root_path %>",
   "display": "standalone",
   "orientation": "portrait-primary",
   "background_color": "#ffffff",
@@ -58,7 +58,7 @@
       "name": "Nouveau projet",
       "short_name": "Nouveau",
       "description": "Créer un nouveau projet",
-      "url": "/projects/new",
+      "url": "<%= new_project_path %>",
       "icons": [
         {
           "src": "/favicons/android-icon-96x96.png",
@@ -70,7 +70,7 @@
       "name": "Dashboard",
       "short_name": "Dashboard",
       "description": "Consulter le tableau de bord",
-      "url": "/dashboard",
+      "url": "<%= dashboard_path %>",
       "icons": [
         {
           "src": "/favicons/android-icon-96x96.png",

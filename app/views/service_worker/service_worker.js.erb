@@ -1,62 +1,97 @@
-var CACHE_VERSION = 'v1';
-var CACHE_NAME = CACHE_VERSION + ':sw-cache-';
+var CACHE_VERSION = 'v2';
+var CACHE_NAME = 'camino-sw-' + CACHE_VERSION;
+var OFFLINE_URL = '/offline.html';
 
-function onInstall(event) {
-  console.log('[Serviceworker]', "Installing!", event);
+var PRECACHE_ASSETS = [
+  OFFLINE_URL,
+  '<%= asset_path 'application.js' %>',
+  '<%= asset_path 'application.css' %>',
+  '<%= asset_path 'tailwind.css' %>',
+  '<%= asset_path 'inter-font.css' %>',
+  '/favicons/android-icon-192x192.png',
+  '/favicons/android-icon-512x512.png',
+  '/favicons/favicon-32x32.png'
+];
+
+self.addEventListener('install', function(event) {
+  self.skipWaiting();
   event.waitUntil(
-    caches.open(CACHE_NAME).then(function prefill(cache) {
-      return cache.addAll([
-        '<%= asset_path 'application.js' %>',
-        '<%= asset_path 'application.css' %>'
-      ]);
+    caches.open(CACHE_NAME).then(function(cache) {
+      return cache.addAll(PRECACHE_ASSETS);
     }).catch(function(error) {
-      console.warn('[Serviceworker] Pre-caching failed (storage may be restricted):', error);
+      console.warn('[Serviceworker] Pre-caching warning:', error);
     })
   );
-}
+});
 
-function onActivate(event) {
-  console.log('[Serviceworker]', "Activating!", event);
+self.addEventListener('activate', function(event) {
   event.waitUntil(
-    caches.keys().then(function(cacheNames) {
-      return Promise.all(
-        cacheNames.filter(function(cacheName) {
-          // Return true if you want to remove this cache,
-          // but remember that caches are shared across
-          // the whole origin
-          return cacheName.indexOf(CACHE_VERSION) !== 0;
-        }).map(function(cacheName) {
-          return caches.delete(cacheName);
+    Promise.all([
+      self.clients.claim(),
+      caches.keys().then(function(cacheNames) {
+        return Promise.all(
+          cacheNames.filter(function(name) {
+            return name !== CACHE_NAME;
+          }).map(function(name) {
+            console.log('[Serviceworker] Deleting legacy cache:', name);
+            return caches.delete(name);
+          })
+        );
+      })
+    ])
+  );
+});
+
+self.addEventListener('fetch', function(event) {
+  // Only handle HTTP/HTTPS GET requests
+  if (event.request.method !== 'GET' || !event.request.url.startsWith('http')) {
+    return;
+  }
+
+  var isNavigation = event.request.mode === 'navigate' ||
+    (event.request.headers.get('accept') && event.request.headers.get('accept').includes('text/html'));
+
+  if (isNavigation) {
+    // Network-First strategy with cache and offline fallback for HTML navigations
+    event.respondWith(
+      fetch(event.request)
+        .then(function(networkResponse) {
+          if (networkResponse && networkResponse.status === 200) {
+            var responseToCache = networkResponse.clone();
+            caches.open(CACHE_NAME).then(function(cache) {
+              cache.put(event.request, responseToCache);
+            });
+          }
+          return networkResponse;
         })
-      );
-    }).catch(function(error) {
-      console.warn('[Serviceworker] Cache cleanup failed:', error);
-    })
-  );
-}
+        .catch(function() {
+          return caches.match(event.request).then(function(cachedResponse) {
+            if (cachedResponse) {
+              return cachedResponse;
+            }
+            return caches.match(OFFLINE_URL);
+          });
+        })
+    );
+    return;
+  }
 
-function onFetch(event) {
+  // Stale-While-Revalidate strategy for static assets (CSS, JS, images, fonts, CDN)
   event.respondWith(
-    // try to return untouched request from network first
-    fetch(event.request).catch(function() {
-      // if it fails, try to return request from the cache
-      return caches.match(event.request).then(function(response) {
-        if (response) {
-          return response;
+    caches.match(event.request).then(function(cachedResponse) {
+      var fetchPromise = fetch(event.request).then(function(networkResponse) {
+        if (networkResponse && networkResponse.status === 200) {
+          var responseToCache = networkResponse.clone();
+          caches.open(CACHE_NAME).then(function(cache) {
+            cache.put(event.request, responseToCache);
+          });
         }
-        // if not found in cache, return default offline content for navigate requests
-        if (event.request.mode === 'navigate' ||
-          (event.request.method === 'GET' && event.request.headers.get('accept') && event.request.headers.get('accept').includes('text/html'))) {
-          console.log('[Serviceworker]', "Fetching offline content", event);
-          return caches.match('/offline.html');
-        }
-      }).catch(function(error) {
-        console.warn('[Serviceworker] Cache match failed:', error);
+        return networkResponse;
+      }).catch(function() {
+        return cachedResponse;
       });
+
+      return cachedResponse || fetchPromise;
     })
   );
-}
-
-self.addEventListener('install', onInstall);
-self.addEventListener('activate', onActivate);
-self.addEventListener('fetch', onFetch)
+});

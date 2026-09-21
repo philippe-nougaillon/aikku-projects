@@ -68,7 +68,6 @@ Rails.application.routes.draw do
   get 'audits/index'
 
   get '/service-worker.js' => 'service_worker#service_worker'
-  get '/manifest.json' => 'service_worker#manifest'
 
   namespace :api, defaults: { format: 'json' } do
     namespace :v1 do

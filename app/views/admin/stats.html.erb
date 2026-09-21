@@ -23,7 +23,7 @@
         <% @users.each do |user| %>
           <% total_lignes = account_infos(user.account) %>
           <tr>
-            <td class="text-neutral"><%= user.account.name %></td>
+            <td class="text-neutral"><%= "#{user.account.name} (##{user.account.id})" %></td>
             <td class="text-neutral"><%= user.email %></td>
             <td class="text-neutral"><%= time_ago_in_words user.last_sign_in_at if user.sign_in_count.positive? %></td>
             <td class=" <%= user.sign_in_count > 10 ? 'text-error font-black' : 'text-black'  %>"><%= user.sign_in_count %></td>
@@ -35,7 +35,7 @@
               <td class="text-neutral"><%= time_ago_in_words user.updated_at %></td>
               <td class="text-neutral"><%= link_to "[X]", admin_suppression_compte_path(account: user.account), class:"btn btn-ghost btn-sm" %></td>
             <% else %>
-              <td colspan=3>Participant</td>
+              <td colspan=4>Participant</td>
               <td class="text-neutral"><%= time_ago_in_words user.updated_at %></td>
               <td></td>
             <% end %>

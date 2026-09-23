@@ -26,6 +26,11 @@
     <%= form.email_field :email, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
   </div>
 
+  <div class="my-5">
+    <%= form.label :theme, 'Thème' %>
+    <%= form.select :theme, options_for_select(User::THEMES, user.theme), { include_blank: true }, class: "block select select-bordered mt-2 w-full" %>
+  </div>
+
   <% if current_user.admin? %>
     <div class="my-5">
       <%= form.label :role %>

@@ -2,6 +2,9 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   static targets = ["item"]
+  static values = {
+    url: String
+  }
 
   connect() {
     this.boundOnStorage = this.onStorage.bind(this)
@@ -29,6 +32,25 @@ export default class extends Controller {
 
     localStorage.setItem("theme", theme)
     this.syncTheme()
+    this.saveTheme(theme)
+  }
+
+  saveTheme(theme) {
+    if (!this.hasUrlValue || !this.urlValue) return
+
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute("content")
+
+    fetch(this.urlValue, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": csrfToken,
+        "Accept": "application/json"
+      },
+      body: JSON.stringify({ theme: theme })
+    }).catch((error) => {
+      console.error("Failed to save theme:", error)
+    })
   }
 
   select(event) {

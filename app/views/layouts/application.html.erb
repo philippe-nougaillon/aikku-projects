@@ -1,11 +1,17 @@
 <!DOCTYPE html>
-<html lang="fr" data-theme="corporate">
+<html lang="fr" data-theme="<%= (user_signed_in? && current_user.theme.presence) || 'corporate' %>">
   <head>
     <title><%= page_title %></title>
     <script>
       (() => {
-        const theme = localStorage.getItem("theme");
-        if (theme) document.documentElement.setAttribute("data-theme", theme);
+        <% if user_signed_in? && current_user.theme.present? %>
+          const theme = <%= current_user.theme.to_json.html_safe %>;
+          localStorage.setItem("theme", theme);
+          document.documentElement.setAttribute("data-theme", theme);
+        <% else %>
+          const theme = localStorage.getItem("theme");
+          if (theme) document.documentElement.setAttribute("data-theme", theme);
+        <% end %>
       })();
     </script>
     <%= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>

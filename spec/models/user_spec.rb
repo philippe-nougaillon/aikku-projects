@@ -78,6 +78,26 @@ RSpec.describe User, type: :model do
       expect(user).not_to be_valid
       expect(user.errors[:account]).to be_present
     end
+
+    it "allows blank theme" do
+      user.theme = nil
+      expect(user).to be_valid
+      user.theme = ""
+      expect(user).to be_valid
+    end
+
+    it "accepts valid themes from THEMES" do
+      described_class::THEMES.each do |theme_name|
+        user.theme = theme_name
+        expect(user).to be_valid
+      end
+    end
+
+    it "rejects invalid themes" do
+      user.theme = "invalid_theme_xyz"
+      expect(user).not_to be_valid
+      expect(user.errors[:theme]).to be_present
+    end
   end
 
   describe "enums" do

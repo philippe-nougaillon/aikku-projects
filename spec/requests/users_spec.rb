@@ -99,9 +99,10 @@ RSpec.describe "/admin/users", type: :request do
     before { sign_in admin }
 
     it "updates the user and redirects to user details" do
-      patch user_path(other_user), params: { user: { name: "Updated Name" } }
+      patch user_path(other_user), params: { user: { name: "Updated Name", theme: "cyberpunk" } }
       expect(response).to redirect_to(user_path(other_user))
       expect(other_user.reload.name).to eq("Updated Name")
+      expect(other_user.reload.theme).to eq("cyberpunk")
     end
   end
 

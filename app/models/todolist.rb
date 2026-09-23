@@ -13,25 +13,27 @@ class Todolist < ApplicationRecord
 
   validates :name, presence: true
 
-  def pct_avancee 
-    ((self.todos.done.count * 100)  / self.todos.count)
+  def pct_avancee
+    return 0 if todos.count.zero?
+
+    ((todos.done.count * 100) / todos.count)
   end
 
   def done?
-    ((self.todos.any?) and (self.todos.done.count == self.todos.count))
+    (todos.any? and (todos.done.count == todos.count))
   end
 
   def name_with_indice
-    "#{self.row} - #{self.name}"
+    "#{row} - #{name}"
   end
 
   def next_todo
-    todos = self.todos.select{|t| !t.done}
+    todos = self.todos.select { |t| !t.done }
     todos.first
-  end  
+  end
 
   def bar_avancee
-    "<span id='progress'>#{'.' * (self.pct_avancee / 10)}</span><span id='progress_done'>#{'.' * (10 - (self.pct_avancee / 10))}</span>"
+    "<span id='progress'>#{'.' * (pct_avancee / 10)}</span><span id='progress_done'>#{'.' * (10 - (pct_avancee / 10))}</span>"
   end
 
   private
@@ -39,5 +41,4 @@ class Todolist < ApplicationRecord
   def slug_candidates
     [SecureRandom.uuid]
   end
-
 end

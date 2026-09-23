@@ -30,6 +30,8 @@ class Todo < ApplicationRecord
   sortable :participant, -> { joins(:user) }, column: "users.name"
 
   def preview_name
+    return "" if self.docname.blank?
+
     if File.extname(self.docname) == ".pdf"
       "/documents/#{self.docfilename}.png"
     else

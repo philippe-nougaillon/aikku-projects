@@ -8,8 +8,6 @@ class Project < ApplicationRecord
   audited
 
   acts_as_taggable
-    
-    #has_calendar :attribute => :created_at  
 
   belongs_to :account
 
@@ -23,43 +21,43 @@ class Project < ApplicationRecord
   validates :name, presence: true
   validates :workflow, presence: true
 
-  default_scope {order('projects.name')}
+  default_scope { order('projects.name') }
 
-  def pct_avancee 
-    unless self.todos.count.zero?
-      ((self.todos.done.count * 100)  / self.todos.count)
-    else
+  def pct_avancee
+    if todos.count.zero?
       0
+    else
+      ((todos.done.count * 100) / todos.count)
     end
   end
 
   def bar_avancee
-    "<span id='progress'>#{'.' * (self.pct_avancee / 10)}</span><span id='progress_done'>#{'.' * (10 - (self.pct_avancee / 10))}</span>"
-    end        
+    "<span id='progress'>#{'.' * (pct_avancee / 10)}</span><span id='progress_done'>#{'.' * (10 - (pct_avancee / 10))}</span>"
+  end
 
   def last_update
-    if self.logs.any?
-      self.logs.maximum(:created_at)
+    if logs.any?
+      logs.maximum(:created_at)
     else
       Date.today
     end
   end
 
   def workflow?
-    self.workflow == 1
+    workflow == 1
   end
 
   def current_todolist
-    lists = self.todolists.reorder(:row).select{|l| !l.done? }
-    return lists.first
+    lists = todolists.reorder(:row).select { |l| !l.done? }
+    lists.first
   end
 
   def daily_logs
-    self.logs.where(created_at: 1.days.ago.to_date..Date.today).reorder(:created_at)
+    logs.where(created_at: 1.day.ago.beginning_of_day..Time.current.end_of_day).reorder(:created_at)
   end
 
   def weekly_logs
-    self.logs.where(created_at: 7.days.ago.to_date..Date.today).reorder(:created_at)
+    logs.where(created_at: 7.days.ago.beginning_of_day..Time.current.end_of_day).reorder(:created_at)
   end
 
   private

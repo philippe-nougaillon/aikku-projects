@@ -27,6 +27,15 @@ class User < ApplicationRecord
   validates :username, presence: true, uniqueness: true
   validates :name, presence: true
 
+  THEMES = %w[
+    light dark cupcake bumblebee emerald corporate synthwave retro
+    cyberpunk valentine halloween garden forest aqua lofi pastel
+    fantasy wireframe black luxury dracula cmyk autumn business
+    acid lemonade night coffee winter
+  ].freeze
+
+  validates :theme, inclusion: { in: THEMES }, allow_blank: true
+
   enum :role, {
     utilisateur: 0,
     admin: 1

@@ -22,6 +22,10 @@
           <strong>Email :</strong>
           <%= @user.email %>
         </p>
+        <p>
+          <strong>Thème :</strong>
+          <%= @user.theme.presence || "Par défaut (corporate)" %>
+        </p>
 
         <p>
           <strong>Créé le:</strong>

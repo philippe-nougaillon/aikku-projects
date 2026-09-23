@@ -48,6 +48,7 @@ Rails.application.routes.draw do
   resources :tables
   resources :fields, only: %i[edit update create destroy]
   resources :mail_logs, only: %i[index]
+  resource :theme, only: %i[update]
 
   get 'tables/:id/fill' => 'tables#fill', as: :fill
   post 'tables/:id/fill' => 'tables#fill_do', as: :fill_do

@@ -1,4 +1,6 @@
-class Todolist < ApplicationRecord
+# frozen_string_literal: true
+
+class Todolist < ApplicationRecord # rubocop:disable Style/Documentation
   include LogConcern
 
   extend FriendlyId
@@ -28,12 +30,13 @@ class Todolist < ApplicationRecord
   end
 
   def next_todo
-    todos = self.todos.select { |t| !t.done }
+    todos = self.todos.reject(&:done)
     todos.first
   end
 
   def bar_avancee
-    "<span id='progress'>#{'.' * (pct_avancee / 10)}</span><span id='progress_done'>#{'.' * (10 - (pct_avancee / 10))}</span>"
+    span = "<span id='progress'>#{'.' * (pct_avancee / 10)}</span>"
+    span + "<span id='progress_done'>#{'.' * (10 - (pct_avancee / 10))}</span>"
   end
 
   private

@@ -1,4 +1,6 @@
-class Project < ApplicationRecord
+# frozen_string_literal: true
+
+class Project < ApplicationRecord # rubocop:disable Style/Documentation
   include LogConcern
   extend SimpleCalendar
 
@@ -32,7 +34,8 @@ class Project < ApplicationRecord
   end
 
   def bar_avancee
-    "<span id='progress'>#{'.' * (pct_avancee / 10)}</span><span id='progress_done'>#{'.' * (10 - (pct_avancee / 10))}</span>"
+    span = "<span id='progress'>#{'.' * (pct_avancee / 10)}</span>"
+    span + "<span id='progress_done'>#{'.' * (10 - (pct_avancee / 10))}</span>"
   end
 
   def last_update
@@ -48,7 +51,7 @@ class Project < ApplicationRecord
   end
 
   def current_todolist
-    lists = todolists.reorder(:row).select { |l| !l.done? }
+    lists = todolists.reorder(:row).reject(&:done?)
     lists.first
   end
 

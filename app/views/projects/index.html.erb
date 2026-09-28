@@ -1,5 +1,5 @@
 <h1 class="flex items-center mb-6">
-  Projets
+  Projets !!!
   <% if policy(Project).new? %>
     <%= link_to new_project_path, title:'Ajouter un nouveau projet' do %>
       <div class="btn btn-accent btn-outline btn-xs">+</div>
@@ -34,56 +34,7 @@
       </thead>
 
       <tbody>
-        <% @projects.each do |project| %>
-          <tr class="hover">
-            <td class="mb-8 pl-2" style="border-left: 7px solid <%= project.color %>">
-              <%= link_to project.name.humanize, project, class: "text-lg text-primary", title: "Ouvrir ce project" %>
-              <br>
-              <i><small><%= truncate(project.description, length: 100) %></small></i>
-            </td>
-            <td><%= l(project.duedate) if project.duedate %></td>
-            <td>
-              <%= number_with_precision(project.todos.sum(:charge_est), precision: 2) %> j
-              / <%= number_with_precision(project.todos.sum(:charge_reelle), precision: 2) %> j
-            </td>
-            <td>
-              <% unless project.todos.count.zero? %>
-                <progress class="progress progress-success w-56" value=<%= project.pct_avancee %> max="100"></progress>
-              <% end %>
-            </td> 
-            <td>
-              <% if project.workflow? and project.current_todolist %>
-                <small><%= truncate(project.current_todolist.name, length: 15) %></small>  
-              <% end %>
-            </td>
-            <td>
-              <div class="flex items-center">
-                <%= link_to users_path(project_id: project.slug) do %>
-                  <div class="avatar-group -space-x-6">
-                    <% project.users.each do |user| %>
-                      <div class="avatar placeholder">
-                        <% if user.avatar.attached? %>
-                          <div class="w-8 rounded-full !bg-slate-500">
-                            <%= image_tag(user.avatar, size:'15x15', alt:'', class:"mini_avatar inline") %>
-                          </div>
-                        <% else %>
-                          <div class="bg-primary-focus text-neutral-content rounded-full w-8">
-                            <span class="text-primary-content"><%= user.username.first.humanize %></span>
-                          </div>
-                        <% end %>
-                      </div>
-                    <% end %>
-                  </div>
-                <% end %>
-                <%= link_to invite_path(id:project.slug), title:'Inviter un nouveau participant', class:'ml-2' do %>
-                  <div class="btn btn-accent btn-outline btn-xs">+</div>
-                <% end %>
-              </div>
-            </td>
-            <td style="color:lightgrey"><%= "Il y a #{time_ago_in_words(project.last_update)}" if project.logs.any? %></td>
-          </tr>
-          <tr />  
-        <% end %>
+        <%= render partial: "project", collection: @projects %>
       </tbody>
     </table>
   </div>

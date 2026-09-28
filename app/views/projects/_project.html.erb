@@ -1,0 +1,52 @@
+<tr class="hover">
+    <td class="mb-8 pl-2" style="border-left: 7px solid <%= project.color %>">
+        <%= link_to project.name.humanize, project, class: "text-lg text-primary", title: "Ouvrir ce project" %>
+        <br>
+        <i>
+            <small>
+                <%= truncate(project.description, length: 100) %>
+            </small>
+        </i>
+    </td>
+    <td>
+        <%= l(project.duedate) if project.duedate %>
+    </td>
+    <td>
+        <%= number_with_precision(project.todos.sum(:charge_est), precision: 2) %> j
+        / 
+        <%= number_with_precision(project.todos.sum(:charge_reelle), precision: 2) %> j
+    </td>
+    <td>
+        <% unless project.todos.count.zero? %>
+            <progress class="progress progress-success w-56" 
+                        value=<%= project.pct_avancee %> 
+                        max="100" 
+                        title="La progression actuelle est de <%= project.pct_avancee %>%">
+            </progress>
+        <% end %>
+    </td> 
+    <td>
+        <% if project.workflow? and project.current_todolist %>
+            <small>
+                <%= truncate(project.current_todolist.name, length: 15) %>
+            </small>  
+        <% end %>
+    </td>
+    <td>
+        <div class="flex items-center">
+            <%= link_to users_path(project_id: project.slug) do %>
+                <div class="avatar-group -space-x-6">
+                    <%= render partial: "users/avatar", collection: project.users, as: :user %>
+                </div>
+            <% end %>
+            <%= link_to invite_path(id:project.slug), title:'Inviter un nouveau participant', class:'ml-2' do %>
+                <div class="btn btn-accent btn-outline btn-xs">+</div>
+            <% end %>
+        </div>
+    </td>
+    <td style="color:lightgrey">
+        <%= "Il y a #{time_ago_in_words(project.last_update)}" if project.logs.any? %>
+    </td>
+</tr>
+<tr>
+</tr>  

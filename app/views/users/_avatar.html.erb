@@ -1,0 +1,13 @@
+ <div class="avatar placeholder">
+    <% if user.avatar.attached? %>
+        <div class="w-8 rounded-full !bg-slate-500">
+            <%= image_tag(user.avatar, size: "15x15", class: "mini_avatar inline", title: user.username) %>
+        </div>
+    <% else %>
+        <div class="bg-primary-focus text-neutral-content rounded-full w-8" title=<%= user.username.humanize %>>
+            <span class="text-primary-content">
+                <%= user.username.first.humanize %>
+            </span>
+        </div>
+    <% end %>
+</div>

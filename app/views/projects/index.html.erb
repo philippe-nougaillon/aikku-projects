@@ -37,7 +37,7 @@
         <% @projects.each do |project| %>
           <tr class="hover">
             <td class="mb-8 pl-2" style="border-left: 7px solid <%= project.color %>">
-              <%= link_to project.name.humanize, project, class: 'text-lg text-primary' %>
+              <%= link_to project.name.humanize, project, class: "text-lg text-primary", title: "Ouvrir ce project" %>
               <br>
               <i><small><%= truncate(project.description, length: 100) %></small></i>
             </td>
